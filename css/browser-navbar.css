@@ -1,18 +1,19 @@
 #browser-navbar {
-  display: flex;
+  display:none;
+  /*display: flex;*/
   flex-direction: row;
 
   height: 34px;
   padding: 0 5px;
   font-size: 15px;
   font-weight: 100;
-  background: linear-gradient(to bottom, #eee, #ddd);
-  border-bottom: 1px solid #aaa;
+  background: linear-gradient(to bottom, #444, #333);
+  border-bottom: 1px solid #222;
 }
 
 #browser-navbar a {
   text-decoration: none;
-  color: #777;
+  color: #ddd;
   cursor: pointer;
   padding: 9px 7px 0;
 }
@@ -23,7 +24,7 @@
 }
 
 #browser-navbar a.disabled {
-  color: #bbb;
+  color: #888;
   cursor: default;
 }
 
@@ -47,26 +48,26 @@
   margin: 4px 0 3px;
   padding: 0 5px;
   font-size: 14px;
-  color: #808080;
+  color: #bbbbbb;
   outline: 0;
   box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2);
-  background: #fff;
-  border: 1px solid #bbb;
+  background: #111;
+  border: 1px solid #333;
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
 }
 
-#browser-navbar .input-group input:focus, 
-#browser-navbar .input-group input:active, 
+#browser-navbar .input-group input:focus,
+#browser-navbar .input-group input:active,
 #browser-navbar .input-group input:hover {
   outline: 0;
   box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2);
-  background: #fff;
-  border: 1px solid #bbb;
+  background: #111;
+  border: 1px solid #333;
 }
 
 #browser-navbar .input-group a {
-  border: 1px solid #bbb;
+  border: 1px solid #444;
   border-left: 0;
   padding: 4px 0;
   margin: 4px 0 3px;

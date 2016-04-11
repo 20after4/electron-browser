@@ -19,7 +19,7 @@ var BrowserNavbarLocation = React.createClass({
 
 var BrowserNavbar = React.createClass({
   render: function() {
-    return <div id="browser-navbar">
+    var div = <div id="browser-navbar">
       <BrowserNavbarBtn title="Rewind" icon="angle-double-left fa-lg" onClick={this.props.onClickHome} disabled={!this.props.page.canGoBack} />
       <BrowserNavbarBtn title="Back" icon="angle-left fa-lg" onClick={this.props.onClickBack} disabled={!this.props.page.canGoBack} />
       <BrowserNavbarBtn title="Forward" icon="angle-right fa-lg" onClick={this.props.onClickForward} disabled={!this.props.page.canGoForward} />
@@ -28,5 +28,6 @@ var BrowserNavbar = React.createClass({
         <BrowserNavbarLocation onEnterLocation={this.props.onEnterLocation} onChangeLocation={this.props.onChangeLocation} onContextMenu={this.props.onLocationContextMenu} page={this.props.page} />
       </div>
     </div>
+    return div;
   }
 })

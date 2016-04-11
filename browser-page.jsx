@@ -15,9 +15,10 @@ var BrowserPageSearch = React.createClass({
     }
   },
   render: function () {
-    return <div id="browser-page-search" className={this.props.isActive ? 'visible' : 'hidden'}>
+    var div = <div id="browser-page-search" className={this.props.isActive ? 'visible' : 'hidden'}>
       <input ref="input" type="text" placeholder="Search..." onKeyDown={this.onKeyDown} />
     </div>
+    return div;
   }
 })
 
@@ -45,7 +46,7 @@ var BrowserPage = React.createClass({
       this.navigateTo(this.props.page.location)
   },
   componentWillUnmount: function () {
-    window.removeEventListener('resize', resize)    
+    window.removeEventListener('resize', resize)
   },
 
   navigateTo: function (l) {
@@ -58,12 +59,13 @@ var BrowserPage = React.createClass({
   },
 
   render: function () {
-    return <div id="browser-page" className={this.props.isActive ? 'visible' : 'hidden'}>
+    var div = <div id="browser-page" className={this.props.isActive ? 'visible' : 'hidden'}>
       <BrowserPageSearch isActive={this.props.page.isSearching} onPageSearch={this.onPageSearch} />
       <webview ref="webview" preload="./preload/main.js" onContextMenu={this.props.onContextMenu} />
       <BrowserPageStatus page={this.props.page} />
     </div>
-  }  
+    return div;
+  }
 })
 
 function webviewHandler (self, fnName) {
@@ -74,6 +76,7 @@ function webviewHandler (self, fnName) {
 }
 
 var webviewEvents = {
+  'new-window': 'onNewWindow',
   'load-commit': 'onLoadCommit',
   'did-start-loading': 'onDidStartLoading',
   'did-stop-loading': 'onDidStopLoading',
@@ -93,6 +96,6 @@ function resize () {
   Array.prototype.forEach.call(document.querySelectorAll('webview'), function (webview) {
     var obj = webview && webview.querySelector('::shadow object')
     if (obj)
-      obj.style.height = (window.innerHeight - 59) + 'px' // -61 to adjust for the tabs and navbar regions
+      obj.style.height = (window.innerHeight - 35) + 'px' // -61 to adjust for the tabs and navbar regions
   })
 }

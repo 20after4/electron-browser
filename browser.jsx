@@ -7,7 +7,7 @@ var urllib = require('url')
 
 function createPageObject (location) {
   return {
-    location: location||'https://github.com/pfraze/electron-browser',
+    location: location||'file://'+__dirname + '/../glowing-bear/index.html',
     statusText: false,
     title: 'new tab',
     isLoading: false,
@@ -40,17 +40,19 @@ var BrowserChrome = React.createClass({
     // :TODO: replace this with menu hotkeys
     var self = this
     document.body.addEventListener('keydown', function (e) {
-      if (e.metaKey && e.keyCode == 70) { // cmd+f
+      if ((e.ctrlKey || e.metaKey) && e.keyCode == 70) { // cmd+f
         // start search
         self.getPageObject().isSearching = true
         self.setState(self.state)
-
+        e.preventDefault();
         // make sure the search input has focus
         self.getPage().getDOMNode().querySelector('#browser-page-search input').focus()
       } else if (e.keyCode == 27) { // esc
         // stop search
         self.getPageObject().isSearching = false
         self.setState(self.state)
+      } else {
+        console.log(e);
       }
     })
   },
@@ -121,7 +123,7 @@ var BrowserChrome = React.createClass({
       self.getPageObject().location = l
       self.getPage().navigateTo(l)
     }}))
-    menu.popup(remote.getCurrentWindow())    
+    menu.popup(remote.getCurrentWindow())
   },
   webviewContextMenu: function (e) {
     var self = this
@@ -198,13 +200,20 @@ var BrowserChrome = React.createClass({
     onChangeLocation: function (location) {
       var page = this.getPageObject()
       page.location = location
-      this.setState(this.state)      
+      this.setState(this.state)
     },
     onLocationContextMenu: function (e) {
       this.locationContextMenu(e.target)
     }
   },
   pageHandlers: {
+    onNewWindow: function(e, page) {
+      var protocol = require('url').parse(e.url).protocol;
+      if (protocol === 'http:' || protocol === 'https:') {
+        require('electron').shell.openExternal(e.url);
+        e.preventDefault();
+      }
+    },
     onDidStartLoading: function (e, page) {
       page.isLoading = true
       page.title = false
@@ -234,6 +243,11 @@ var BrowserChrome = React.createClass({
       page.title = e.title
       page.location = this.getWebView().getUrl()
       this.setState(this.state)
+      var title = page.title;
+      if (title.length > 140) {
+        title = title.substr(0, 137) + '...';
+      }
+      document.title = title;
     },
     onContextMenu: function (e, page, pageIndex) {
       this.getWebView(pageIndex).send('get-contextmenu-data', { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY })
@@ -251,7 +265,7 @@ var BrowserChrome = React.createClass({
 
   render: function() {
     var self = this
-    return <div>
+    var div = <div>
       <BrowserTabs ref="tabs" pages={this.state.pages} currentPageIndex={this.state.currentPageIndex} {...this.tabHandlers} />
       <BrowserNavbar ref="navbar" {...this.navHandlers} page={this.state.pages[this.state.currentPageIndex]} />
       {this.state.pages.map(function (page, i) {
@@ -260,6 +274,7 @@ var BrowserChrome = React.createClass({
         return <BrowserPage ref={'page-'+i} key={'page-'+i} {...self.pageHandlers} page={page} pageIndex={i} isActive={i == self.state.currentPageIndex} />
       })}
     </div>
+    return div;
   }
 })
 
