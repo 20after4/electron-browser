@@ -4,6 +4,14 @@ var Menu = remote.require('menu')
 var MenuItem = remote.require('menu-item')
 var clipboard = require('clipboard')
 var urllib = require('url')
+const electron      = remote.require('electron');
+const nativeImage   = electron.nativeImage;
+const Tray          = electron.Tray;
+
+const appIcon = new Tray(__dirname + '/images/tray.png');
+    appIcon.setToolTip('Electric Glowing Bear.');
+  //appIcon.setContextMenu(contextMenu);
+  //appIcon.on('click', activateMainWindow);
 
 function createPageObject (location) {
   return {
@@ -213,6 +221,12 @@ var BrowserChrome = React.createClass({
         require('electron').shell.openExternal(e.url);
         e.preventDefault();
       }
+    },
+    onFaviconUpdated: function(e, page, pageIndex) {
+        var favicons = e.favicons;
+        var data = favicons[0];
+        var img = nativeImage.createFromDataURL(data);
+        appIcon.setImage(img);
     },
     onDidStartLoading: function (e, page) {
       page.isLoading = true

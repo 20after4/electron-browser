@@ -77,6 +77,7 @@ function webviewHandler (self, fnName) {
 
 var webviewEvents = {
   'new-window': 'onNewWindow',
+  'page-favicon-updated': 'onFaviconUpdated',
   'load-commit': 'onLoadCommit',
   'did-start-loading': 'onDidStartLoading',
   'did-stop-loading': 'onDidStopLoading',
