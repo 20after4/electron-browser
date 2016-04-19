@@ -1,7 +1,8 @@
 # electron-browser
 
 A browser ui for electron, written in react.
-To use it in your project, I recommend forking or cloning this repo.
+
+forked from pfraze/electron-browser for use in electric-gb
 
 ![./screenshot.png](./screenshot.png)
 
